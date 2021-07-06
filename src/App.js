@@ -1,25 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState} from 'react';
+import Login from './Login';
+import Register from './Register';
+import Main from './Main';
+import Start from './Start';
+import Edit from './Edit';
+import { BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
+import Axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+
+
+
+function App () {
+      return (
+          <Router>
+          <div className='App'>
+              <Switch>
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
+          <Route path='/' exact component={Main} />
+          <Route path='/start' component={Start} />
+          <Route path='/edit' component={Edit} />
+          </Switch>
+          </div>
+          </Router>
+
+      );
 }
 
+
 export default App;
+
+    

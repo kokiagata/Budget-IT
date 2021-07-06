@@ -24,9 +24,7 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
+
 
 @keyframes App-logo-spin {
   from {
@@ -35,4 +33,486 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.tracker {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Bungee Inline', cursive;
+  border-radius: 10px;
+  width: 500px;
+  color: white;
+  margin: 0px auto;
+}
+
+
+.parent{
+width: 500px;
+padding-left: 30%;
+padding-right: 30%;
+}
+  
+
+
+.tracker-dashboard{
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Zen Dots', cursive;
+  border-radius: 10px;
+  width: 100%;
+  background-color: white;
+  margin: 0px auto;
+  border: 1px solid #95A5A6;
+  box-shadow: 2px 2px 2px 2px #95A5A6;
+  
+}
+
+
+label{
+color: black;
+margin-top: 10px;
+float: left;
+margin-left: 28px;
+font-size: 20px;
+
+}
+
+h{
+  color: black;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+a{
+color: white;
+}
+
+#editBudget{
+color: rgb(96, 108, 130);
+font-size: 20px;
+}
+
+a:link {
+  text-decoration: none;
+
+}
+li a{
+  color: rgb(0, 32, 189);
+  font-weight: bold;
+}
+li{
+  font-size: 15px;
+  display: inline;
+}
+ul{
+margin: 0px 0px 0px -20px;
+}
+
+
+#expense{
+  color: rgb(96, 108, 130);
+  text-align: left;
+  font-size: 20px;
+}
+#category{
+color: rgb(96, 108, 130);
+  text-align: left;
+  font-size: 20px;
+}
+
+input{
+background-color: white;
+display: inline-block;
+border: 1px solid #95A5A6;
+margin-bottom: 20px;
+border-radius: 10px;
+outline: none;
+
+}
+
+input::placeholder{
+color:rgb(96, 108, 130);
+font-size: 20px;
+text-align: left;
+text-decoration: none;
+}
+
+input[type='number']{
+width: 90%;
+height: 50px;
+}
+input[type='number']:focus{
+border: 1px solid rgb(0, 32, 189);
+}
+input[type='text']{
+width: 90%;
+height: 50px;
+}
+input[type='date']{
+width: 280px;
+height: 50px;
+}
+input[type='password']{
+width: 90%;
+height: 50px;
+}
+input[type='submit']{
+width: 95%;
+height: 50px;
+}
+input[type='email']{
+width: 90%;
+height: 50px;
+}
+input[type='email']:focus{
+border: 1px solid rgb(0, 32, 189);
+}
+select{
+background-color: white;
+border: 1px solid #95A5A6;
+margin-bottom: 20px;
+margin-top: 20px;
+border-radius: 10px;
+outline: none;
+width: 95%;
+height: 50px;
+}
+select:focus{
+border: 1px solid rgb(0, 32, 189);
+}
+
+
+input, select, textarea {
+color: black;
+font-size: 20px;
+font-family: 'Roboto', sans-serif;
+text-align: left;
+padding-left: 20px;
+}
+
+.title {
+text-align: center;
+font-size: 70px;
+margin-top: 500px;
+font-family: 'Bungee Shade', cursive;
+}
+
+.button{ 
+margin-top: 20px;
+color: white;
+background-color: rgb(0, 32, 189);
+text-align: center !important;
+padding-right: 10px;  
+width: 95%;
+height: 50px;
+border-radius: 10px;
+border: 1px solid #95A5A6;
+font-size: 20px;
+font-weight: bold;
+}
+.button:hover{
+cursor: pointer;
+font-size: 22px;
+background-color: rgb(0, 0, 139);
+}
+
+
+.toggle{
+text-align: center;
+position: relative;
+z-index: 1;
+width: 500px;
+border-radius: 48px 48px 0px 0px;
+background-color: #D2B4DE;
+font-size: 10px;
+margin-bottom: 0px;
+border-bottom: 2px solid #95A5A6;
+}
+
+#addBtn{
+display: inline-block;
+font-size: 20px;
+text-align: left;
+margin-left: 0px;
+color: white;  
+margin: 0px 20px 0px -10px;
+}
+#expenseBtn{
+display: inline-block;
+font-size: 20px;
+color: white; 
+margin: 0px -90px 0px 20px;
+}
+#logout{
+display: inline-block;
+color: white;
+margin: 0px 0px 0px 60px;
+border: none;
+width: 25%;
+
+}
+
+
+#logoutBtn{
+color: white;
+border: none;
+width: 100%;
+margin-left: 40%;
+text-align: left;
+background-color: #D2B4DE;
+cursor: pointer;
+}
+
+#addExpense{
+width: 100%;
+margin-top: -15%;
+}
+
+#expenseField{
+height: 500px;
+background-color: white;
+margin-top: -50px;
+}
+
+
+#remainingBudget{
+position: absolute;
+}
+
+.remainingBudget{
+color: #7DCEA0;
+font-size: 100px;
+margin-top: 0%;
+margin-bottom: 0px;
+text-align: center;
+overflow: auto;
+}
+.thisBudget{
+color: #1B4F72;
+font-size: 100px;
+margin-top: 0%;
+margin-bottom: 0px;
+text-align: center;
+overflow: auto;
+
+}
+.budgetTitle{
+text-align: left;
+border-bottom: 2px solid #95A5A6;
+width: 95%;
+padding-left: 5%;
+display: block;
+font-family: 'Roboto';
+}
+
+#totalSpent{
+color: #CD6155;
+text-decoration: underline;
+font-size: 50px;
+margin-bottom: 5%;
+}
+
+
+
+
+#page{
+background-color:#F0F3F4;
+padding-top: 50px;
+
+}
+#formField{
+font-family: 'Roboto', sans-serif;
+background-color: white;
+opacity: 1;
+border-radius: 10px;
+padding: 5% 5%;
+box-shadow: 2px 2px 5px 5px #BDC3C7;
+}
+input[type='text']:focus{
+border: 1px solid rgb(0, 32, 189);
+}
+input[type='password']:focus{
+border: 1px solid rgb(0, 32, 189);
+}
+
+.message{
+color: rgb(96, 108, 130);
+font-size: 15px;
+}
+.title{
+color: rgb(0, 32, 189);
+font-size: 70px;
+margin-top: 0px;
+padding-top: 0px;
+margin-bottom: 0px;
+text-align: center;
+font-family: 'Bungee Shade', cursive;
+}
+h1{
+color: rgb(96, 108, 130);
+font-size: 40px;
+font-weight: none;
+margin-top: 0px;
+margin-bottom: 0px;
+}
+h2{
+color: rgb(96, 108, 130);
+font-size: 20px;
+margin-bottom: 30px;
+}
+
+
+
+h3{
+color: rgb(96, 108, 130);
+font-size: 20px;
+}
+h4{
+color: rgb(96, 108, 130);
+font-size: 15px;
+text-align: left;
+margin-left: 10px;
+font-weight: bold;
+}
+
+.dashboard{
+font-family: 'Roboto', sans-serif;
+border-radius: 50px 50px 5px 5px;
+border: 1px solid #95A5A6;
+align-items: center;
+grid-area: inners;
+width: 100%;
+height: 320px;
+background-color: #D6EAF8;
+overflow-y: auto;
+overflow-x: hidden;
+z-index: 0;
+}
+
+
+#record {
+  text-align: center;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 100%;
+  font-size: 20px;
+}
+
+#record td, #record th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#record tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#record tr:hover {
+  background-color: #ddd;
+}
+
+#record th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #7dcfa0;
+  color: white;
+}
+.table {
+  height: auto;
+  overflow: auto;
+  overflow-y: auto;
+}
+
+.font-roboto {
+  font-family: 'Roboto' !important;
+}
+.font-bungee {
+  font-family: 'Bungee Inline' !important;
+}
+.font-shade {
+  font-family: 'Bungee Share' !important;
+}
+
+.deleteButton { 
+  color: red;
+  border: none;
+  background-color: Transparent;
+}
+.deleteButton:hover {
+  cursor: pointer;
+}
+
+.sidebar {
+  background-color: Transparent;
+  border: none;
+  font-size: 30px;
+  color: white;
+  margin-left: 1rem;
+  z-index: 1;
+  padding-top: 10px;
+}
+.sidebar:hover {
+  cursor: pointer;
+}
+
+.nav-menu.active {
+top: -15%;
+left: -10%;
+transition: 350ms;
+padding-top: 50px;
+}
+
+.nav-menu {
+  background-color: Transparent;
+  width: 200px;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: -100%;
+  transition: 850ms;
+  z-index: 0;
+  left:-10%;
+}
+
+
+
+.menuContent ul{
+  display: table-row;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 0px 8px 0px;
+  width: 100%;
+  background-color: Transparent;
+}
+
+.menuList:hover {
+  color: white;
+  cursor: pointer;
+}
+
+#menu {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+}
+
+.edit {
+  color: black;
+}
+.edit:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.logoutButton {
+  background-color: Transparent;
+  border: none;
 }
