@@ -13,7 +13,8 @@ const httpProxy = require('http-proxy');
 const proxy = httpProxy.createServer({});
 const User = require("./budget");
 const Expense = require('./expense');
-const { findById } = require("./budget");
+//const { findById } = require("./budget");
+const ObjectId = require('mongodb').ObjectId;
 
 
 
@@ -100,6 +101,7 @@ app.get('/', checkAuthenticated, (req, res) => {
       console.log(req.user._id);
     } else {
       console.log(err)
+      onsole.log('Please login')
     }
   });
   });
@@ -126,18 +128,39 @@ app.post('/start', (req, res) => {
 
   app.post('/expense-entered', (req, res) => {
     let date;
+    let note;
+
     if(req.body.date === ''){
       date = new Date();
     } else {
       date = req.body.date;
-    }
+    };
     
-    let newExpense = new Expense({
+    let newExpense;
+    if(req.body.detail !== 'Other') {
+      newExpense = new Expense({
       expense: req.body.expense,
       detail: req.body.detail,
-      date: new Date(date).toISOString().slice(0,10)
+      date: new Date(date).toISOString().slice(0,10),
+      memo: req.body.memo
     });
+  } else if(req.body.detail === 'Other' && req.body.other){
+    newExpense = new Expense({
+      expense: req.body.expense,
+      detail: req.body.other,
+      date: new Date(date).toISOString().slice(0, 10),
+      memo: req.body.memo
+    });
+  } else if(req.body.detail === 'Other' && !req.body.other) {
+    newExpense = new Expense({
+      expense: req.body.expense,
+      detail: req.body.detail,
+      date: new Date(date).toISOString().slice(0, 10),
+      memo: req.body.memo
+    });
+  }
 
+if(req.body.expense !== '') {
  User.findByIdAndUpdate(req.user._id, {$push: {log: newExpense}}, {new: true, upsert: true}, function(err, result){
 if(!err){
   //let remain = result.budget - minus;
@@ -154,6 +177,10 @@ if(!err){
   console.log(err);
 }
  });
+} else {
+  console.error('Expense needs to be entered')
+  res.send('Error. Expense needs to be entered');
+}
   });
 
   app.post('/get-expenses', (req, res) => {
@@ -169,17 +196,24 @@ if(!err){
         return month.date.slice(0,7) === date;
       });
       let byCategory = byCategoryAndMonth.filter((category) => {
-        if(req.body.category !== 'All'){
+        if(req.body.category !== 'All' && req.body.category !== 'Other'){
         return category.detail === req.body.category;
-        } else{
-          return category;
+        } else if(req.body.category === 'Other' && req.body.others) {
+          return category.detail === req.body.others;
+        } else if(req.body.category === 'Other' && !req.body.others) {
+          return category.detail === req.body.category;
         }
       }).reduce((acc, val) => {
       return acc + val.expense;
     },0);
 
+    if(!req.body.others) {
     console.log(req.body.category + ': $' + byCategory);
     res.send({total: req.body.category + ': $' + byCategory});
+    } else {
+      console.log(req.body.others + ': $' + byCategory);
+      res.send({total: req.body.others + ': $' + byCategory})
+    }
     } else {
       console.log(err);
     }
@@ -206,13 +240,35 @@ app.post('/history', (req, res) => {
 app.get('/get-expense-data', (req, res) => {
   User.findById(req.user._id, async function(err, result){
     let history = result.log;
+    let chartData = history.filter((byMonth) => {
+      return byMonth.date.slice(0,7) === new Date().toISOString().slice(0,7)
+    });
+    let dataset = [];
+    let value = [];
+    for(let i in chartData){
+      if(!dataset.includes(chartData[i].detail)) {
+        dataset.push(chartData[i].detail)
+      } else {
+        i += 1 ;
+      }
+    }
+    for(let j = 0; j < dataset.length; j++) {
+        value.push(chartData.filter((elem) => {
+          return elem.detail === dataset[j]
+        }).reduce((acc, val) => {
+          return acc + val.expense;
+        }, 0));
+    }
     //history = history.filter((byMonth) => {
       //return byMonth.date.slice(0,7) === new Date().toISOString().slice(0,7)
     //});
     
     try {
       console.log(history);
-      res.send({expenseData: history});
+      console.log(chartData)
+      console.log(dataset)
+      console.log(value)
+      res.send({expenseData: history, chart: chartData, dataset: dataset, dataPoints: value});
     } catch(e) {
       console.log(e)
     }
@@ -232,13 +288,51 @@ app.delete('/delete', (req, res) => {
           if (err) {
             console.log(err);
           } else {
-            res.send({expenseData: deletedRow});
+            let minus = result.log.filter((remainingBudget)=>{
+              return remainingBudget.date.slice(0,7) ==  new Date().toISOString().slice(0,7)
+            }).reduce((sub, val)=>{
+              return sub + val.expense
+            }, 0);
+              let remain = result.budget - Number(minus).toFixed(2);
+            res.send({expenseData: deletedRow, leftover: Number(remain).toFixed(2)});
           }
         });
       }
     }
   );  
 });
+
+app.put('/updateTable', (req, res) => {
+console.log(req.body.newExpense)
+if(req.body.newExpense) {
+  User.findOneAndUpdate({_id: req.user._id, 'log._id': ObjectId(req.body.rowDataId)}, {$set: {'log.$.expense': parseFloat(req.body.newExpense)}}, (err, result) => {
+  });
+}
+if(req.body.newDetail) {
+  User.findOneAndUpdate({_id: req.user._id, 'log._id': ObjectId(req.body.rowDataId)}, {$set: {'log.$.detail': req.body.newDetail}}, (err, result) => {
+  });
+}
+if(req.body.newDate) {
+  User.findOneAndUpdate({_id: req.user._id, 'log._id': ObjectId(req.body.rowDataId)}, {$set: {'log.$.date': req.body.newDate}}, (err, result) => {
+  });
+}
+if(req.body.newMemo) {
+  User.findOneAndUpdate({_id: req.user._id, 'log._id': ObjectId(req.body.rowDataId)}, {$set: {'log.$.detail': req.body.newMemo}}, (err, result) => {
+  });
+}
+
+User.findOne({_id: req.user._id}, (err, item) => {
+  if(!err) {
+  console.log(item.log);
+  res.send({expenseData: item.log});
+  } else {
+    console.error(err);
+  }
+});
+})
+
+
+
 
 app.post('/edited-budget', (req, res) => {
   User.findByIdAndUpdate(req.user._id, {budget: req.body.budget}, (err, result) => {

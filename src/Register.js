@@ -56,13 +56,15 @@ class Register extends Component {
 <p className='title'>Budget-IT</p>
 <div id='formField'>
 <div id='form'>
+  <form onSubmit={this.register}>
 <label for='username'>User Name</label>
 <input type='text' id='newUser' placeholder='UserName' required onChange={(e) => this.setState({registerUsername: e.target.value})} />
 <label for='password'>Password</label>
 <input type='password' id='newPassword' placeholder='Password' required onChange={(e) => this.setState({registerPassword: e.target.value})} />
 <label for='email'>Email</label>
 <input type='email' id='email' placeholder='Email' required onChange={(e) => this.setState({registerEmail: e.target.value})} />
-<button className='button' onClick={this.register}>Submit</button>
+<button className='button' type='submit'>Submit</button>
+</form>
 </div>
 <div>
 <ul>
