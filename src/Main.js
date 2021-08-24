@@ -9,6 +9,7 @@ import * as AiIcons from 'react-icons/ai';
 import editableRows from './components/editableRow';
 import tableDatas from './components/tableData';
 import { Pie } from 'react-chartjs-2';
+import ReactTooltip from 'react-tooltip';
 
 
 
@@ -19,6 +20,8 @@ class Main extends Component {
     super(props);
     this.state = {
       redirect: null,
+      originalBudget: 0,
+      principleExpense: 0,
       registeredBudget: 0,
       remainingBudget: 0,
       additionalExpenses: 0,
@@ -43,6 +46,7 @@ class Main extends Component {
       updatedMemo: '',
       dataPoints: [],
       chartLabel: [],
+      showChart: false
     }
   };
     
@@ -59,7 +63,6 @@ class Main extends Component {
         }
     };
 
-//I am trying to figure out how to save user input tp be used for the next entry for 'Other'
     
     addExpense = async () => {
       const response = await Axios({
@@ -134,7 +137,9 @@ class Main extends Component {
         url: 'http://localhost:3001/'
       });
       console.log({ response });
-      this.setState({ registeredBudget: response.data.budget});
+      this.setState({ originalBudget: response.data.budget});
+      this.setState({ principleExpense: response.data.principles });
+      this.setState({ registeredBudget: response.data.budget - response.data.principles})
       this.setState({ remainingBudget: response.data.leftover});
       if(this.state.remainingBudget === 0){
         this.state.remainingBudget += this.state.registeredBudget;
@@ -155,7 +160,11 @@ url: 'http://localhost:3001/get-expense-data'
 this.setState({ expenseData: response.data.expenseData})
 this.setState({ dataPoints: response.data.dataPoints })
 this.setState({ chartLabel: response.data.dataset })
+if(response.data.dataset.length > 0) {
+  this.setState({ showChart: true })
+}
 
+console.log(this.state.showChart)
 console.log(this.state.dataPoints)
 console.log(this.state.chartLabel)
 
@@ -169,33 +178,30 @@ console.log(this.state.chartLabel)
         label: 'Expense',
         data: this.state.dataPoints,
         backgroundColor: [
-        '#F5B7B1',
-        '#D2B4DE',
-        '#AED6F1',
-        '#A2D9CE',
-        '#FAD7A0',
-        '#E5E7E9', 
-        '#154360', 
-        '#1D8348',
-        '#CD6155'],
+        '#154360',
+        '#394e7f',
+        '#6d5492',
+        '#a55396',
+        '#d75387',
+        '#fa5f6a', 
+        '#ff7e43', 
+        '#ffa600',
+        '#F1C40F',
+        '#F9E79F'],
       },],
         options: {
-          tooltip: {
-            callbacks: {
-              title: function(tooltipItem, data) {
-                return;
-              }
-            },
-            },
           },
       }
-  
-
+    
+      if(this.state.showChart === true){
   return (
   <div>
     <Pie data={data} />
   </div>
   )
+      } else {
+        return;
+      }
 }
 
 
@@ -338,7 +344,8 @@ showSidebar = () => {
 <div className='tracker-dashboard'>
   <h3 className='budgetTitle'>This Month's Budget</h3>
   <div className='thisBudget'>
-  <span id='budgetNum' className='font-roboto'>${this.state.registeredBudget}</span>
+  <span id='budgetNum' className='font-roboto' data-tip data-for='budgetBreakdown'>${this.state.registeredBudget}</span>
+  <ReactTooltip id='budgetBreakdown' effect='solid' className='tooltips'>Original Budget(${this.state.originalBudget}) - Principle Expenses(${this.state.principleExpense })</ReactTooltip>
   </div>
   <h3 className='budgetTitle'>Remaining Budget</h3>
 <div className={this.state.remainingBudget >= 0 ? 'remainingBudget' : 'remainingBudgetNeg'}>
@@ -401,7 +408,7 @@ showSidebar = () => {
   <span>{ this.state.totalExpenses }</span>
 </div>
 <div>
-  {this.createChart()}
+  <span>{this.createChart()}</span>
 </div>
   <div style={{backgroundColor: 'white', borderRadius: '10px', marginTop: '10px'}} className='table'>
     <table id={this.state.contenteditable === 'false' ? 'record' : 'recordEditable'}>

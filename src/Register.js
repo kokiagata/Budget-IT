@@ -38,6 +38,8 @@ class Register extends Component {
         alert('Registration Failed. Empty Password')
       } else if(response.data === 'Empty Email'){
         alert('Registration Failed. Empty Email');
+      } else if(response.data === 'Invalid Email Format') {
+        alert('Registration Failed. Invalid Email Format');
       } else {
         alert('Registration Failed. User with this Username already exists');
       }
@@ -56,15 +58,14 @@ class Register extends Component {
 <p className='title'>Budget-IT</p>
 <div id='formField'>
 <div id='form'>
-  <form onSubmit={this.register}>
+  
 <label for='username'>User Name</label>
 <input type='text' id='newUser' placeholder='UserName' required onChange={(e) => this.setState({registerUsername: e.target.value})} />
 <label for='password'>Password</label>
 <input type='password' id='newPassword' placeholder='Password' required onChange={(e) => this.setState({registerPassword: e.target.value})} />
 <label for='email'>Email</label>
 <input type='email' id='email' placeholder='Email' required onChange={(e) => this.setState({registerEmail: e.target.value})} />
-<button className='button' type='submit'>Submit</button>
-</form>
+<button className='button' type='submit' onClick={this.register}>Submit</button>
 </div>
 <div>
 <ul>

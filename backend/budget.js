@@ -6,6 +6,10 @@ const user = new mongoose.Schema({
     password: {type: String, require: true},
     email: {type: String, require: true},
     budget: Number,
+    housing: Number,
+    savings: Number,
+    insurance: Number,
+    subscriptions: Number,
     log: []
 });
 

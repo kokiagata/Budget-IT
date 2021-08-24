@@ -67,12 +67,14 @@ app.post('/login', (req, res)=>{
 
 app.post('/register', (req, res)=>{
   User.findOne({username: req.body.username}, async (err, doc)=>{
-    if(err) throw err;
-    if(req.body.username === '') res.send('Empty Username');
-    if(req.body.password === '') res.send('Empty Password');
-    if(req.body.email === '') res.send('Empty Email');
-    if(doc) res.send('User already exists');
-    if(!doc && req.body.username !== '' && req.body.password !== '' && req.body.email !== '') {
+    if(err) { throw err; }
+    else if(req.body.username === '') { res.send('Empty Username');}
+    else if(req.body.password === '') { res.send('Empty Password');}
+    else if(req.body.email === '') { res.send('Empty Email');}
+    else if(!req.body.email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )) { res.send('Invalid Email Format')}
+    else if(doc) { res.send('User already exists');}
+    else if(!doc && req.body.username !== '' && req.body.password !== '' && req.body.email !== '') {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
       const newUser = new User({
@@ -87,6 +89,7 @@ app.post('/register', (req, res)=>{
   });
 });
 
+// Thinking of a way to showcase the original budget and principle expenses somewhere for more UI friendly display //
 app.get('/', checkAuthenticated, (req, res) => {
   User.findById(req.user._id, function(err, result){
     if(!err){
@@ -95,9 +98,12 @@ app.get('/', checkAuthenticated, (req, res) => {
       }).reduce((sub, val)=>{
         return sub + val.expense
       }, 0);
-      let remain = result.budget - Number(minus).toFixed(2);
 
-      res.send({budget: result.budget, leftover: Number(remain).toFixed(2)});
+      let totalPrinciple = result.housing + result.savings + result.insurance + result.subscriptions;
+      let remain = result.budget - totalPrinciple - Number(minus).toFixed(2);
+
+      
+      res.send({budget: result.budget, leftover: Number(remain).toFixed(2), principles: totalPrinciple});
       console.log(req.user._id);
     } else {
       console.log(err)
@@ -110,7 +116,7 @@ app.get('/', checkAuthenticated, (req, res) => {
 
 app.post('/start', (req, res) => {
 
-  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget}, {new: true}, (err, result) => {
+  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget, housing: req.body.housing, savings: req.body.savings, insurance: req.body.insurance, subscriptions: req.body.subscriptions}, {new: true}, (err, result) => {
     if(!err && result.budget !== '' && result.budget !== null){
       console.log('Success');
       res.send('entered')
@@ -169,7 +175,9 @@ if(!err){
   }).reduce((sub, val)=>{
     return sub + val.expense
   }, 0);
-  let remain = result.budget - Number(minus).toFixed(2);
+  let principle = result.principle;
+  let totalPrinciple = principle[0].Housing + principle[0].Savings + principle[0].Insurance + principle[0].Subscription;
+  let remain = result.budget - totalPrinciple - Number(minus).toFixed(2);
 
   res.send({addedExpense: req.body.expense, leftover: Number(remain).toFixed(2)});
   console.log(result);
@@ -335,6 +343,13 @@ User.findOne({_id: req.user._id}, (err, item) => {
 
 
 app.post('/edited-budget', (req, res) => {
+  
+  let newPrinciples = new Principle({
+    Housing: req.body.newHousing,
+    Savings: req.body.newSavings,
+    Insurance: req.body.newInsurance,
+    Subscription: req.body.newSubscription
+  })
   User.findByIdAndUpdate(req.user._id, {budget: req.body.budget}, (err, result) => {
     if(!err) {
       console.log(result.budget);

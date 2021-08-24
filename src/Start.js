@@ -9,6 +9,10 @@ class Start extends Component {
     super(props);
     this.state = {
       userBudget: '',
+      userHousing: '',
+      userSavings: '',
+      userInsurance: '',
+      userSubscription: '',
       redirect: null,
     };
   }
@@ -19,6 +23,10 @@ class Start extends Component {
         method: 'POST',
         data: {
           budget: this.state.userBudget,
+          housing: this.state.userHousing,
+          savings: this.state.userSavings,
+          insurance: this.state.userInsurance,
+          subscriptions: this.state.userSubscription
         },
         withCredentials: true,
         url: 'http://localhost:3001/start',
@@ -51,6 +59,12 @@ class Start extends Component {
                     this.setState({ userBudget: e.target.value });
                   }}
                 />
+                {/*creating principle inputs to subtract from the budget first */}
+                <h4>Next, Register Your Principle Expenses!</h4>
+                  <input placeholder='Housing' type='text' onChange={(e) => this.setState({ userHousing: e.target.value })} />
+                  <input placeholder='Savings' type='text' onChange={(e) => this.setState({userSavings: e.target.value})} />
+                  <input placeholder='Insurance' type='text' onChange={(e) => this.setState({userInsurance: e.target.value})} />
+                  <input placeholder='Subscription' type='text' onChange={(e) => this.setState({userSubscription: e.target.value})} />
                 <button
                   type="submit"
                   value="Register"

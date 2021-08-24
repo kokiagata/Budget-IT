@@ -602,3 +602,7 @@ border: none;
 border-bottom: .5px solid rgb(182, 123, 250);
 color: rgb(182, 123, 250);
 }
+
+.tooltips {
+  font-family: 'Roboto';
+}
