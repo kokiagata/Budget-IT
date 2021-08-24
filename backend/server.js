@@ -344,18 +344,31 @@ User.findOne({_id: req.user._id}, (err, item) => {
 
 app.post('/edited-budget', (req, res) => {
   
-  let newPrinciples = new Principle({
-    Housing: req.body.newHousing,
-    Savings: req.body.newSavings,
-    Insurance: req.body.newInsurance,
-    Subscription: req.body.newSubscription
-  })
-  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget}, (err, result) => {
+  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget, housing: req.body.newHousing, savings: req.body.newSavings, insurance: req.body.newInsurance, subscriptions: req.body.newSubscription}, (err, result) => {
     if(!err) {
       console.log(result.budget);
+      console.log(result.housing);
+      console.log(result.savings);
+      console.log(result.insurance);
+      console.log(result.subscription);
       res.send('budget edited');
     } else {
       console.log(err);
+    }
+  });
+});
+
+app.get('/get-principle-data', (req, res) => {
+  User.findById(req.user._id, (err, result) => {
+    if(!err) {
+      let principleHousing = result.housing;
+      let principleSavings = result.savings;
+      let principleInsurance = result.insurance;
+      let principleSubscriptions = result.subscriptions;
+      let originalBudget = result.budget;
+      res.send({ housing: principleHousing, savings: principleSavings, insurance: principleInsurance, subscriptions: principleSubscriptions, budget: originalBudget})
+    } else {
+      console.log(err)
     }
   });
 });
