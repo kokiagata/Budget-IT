@@ -488,6 +488,9 @@ z-index: 0;
 .font-roboto {
   font-family: 'Roboto' !important;
 }
+.font-roboto:hover {
+  cursor: pointer;
+}
 .font-bungee {
   font-family: 'Bungee Inline' !important;
 }

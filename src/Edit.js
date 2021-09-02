@@ -78,16 +78,15 @@ class Edit extends Component {
             <label for='income'>Budget:</label>
             <input type='text' id='income' placeholder={this.state.oldBudget} onmouseover='pointer' onChange={(e) => {e.target.value !== '' ? this.setState({ newBudget: e.target.value}) : this.setState({ newBudget: e.target.placeholder })}} />
 
-{/* Trying to make the below input field so when empty, placeholder can be use */}
             <h4>You can also change your principle expenses from here!</h4>
             <label for='newHousing'>Housing:</label>
-            <input id='newHousing'placeholder={this.state.oldHousing} type='text' onChange={(e)=> {e.target.value !== '' ? this.setState({ newHousing: e.target.value }) : this.setState({ newHousing: Number(e.target.placeholder) })}} />
+            <input id='newHousing'placeholder={this.state.oldHousing} type='text' onChange={(e)=> {e.target.value !== '' ? this.setState({ newHousing: e.target.value }) : this.setState({ newHousing: e.target.placeholder })}} />
             <label for='newSavings'>Savings:</label>
-            <input id='newSavings'placeholder={this.state.oldSavings} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newSavings: e.target.value }) : this.setState({ newSavings: Number(e.target.placeholder) })}} />
+            <input id='newSavings'placeholder={this.state.oldSavings} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newSavings: e.target.value }) : this.setState({ newSavings: e.target.placeholder })}} />
             <label for='newInsurance'>Insurance:</label>
-            <input id='newInsurance'placeholder={this.state.oldInsurance} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newInsurance: e.target.value }) : this.setState({ newInsurance: Number(e.target.placeholder) })}} />
+            <input id='newInsurance'placeholder={this.state.oldInsurance} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newInsurance: e.target.value }) : this.setState({ newInsurance: e.target.placeholder })}} />
             <label for='newSubscriptions'>Subscriptions:</label>
-            <input id='newSubscriptions'placeholder={this.state.oldSubscriptions} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newSubscription: e.target.value }) : this.setState({ newSubscription: Number(e.target.placeholder) })}} />
+            <input id='newSubscriptions'placeholder={this.state.oldSubscriptions} type='text' onChange={(e) => {e.target.value !== '' ? this.setState({ newSubscription: e.target.value }) : this.setState({ newSubscription: e.target.placeholder })}} />
             <button type='submit' className='button' onClick={this.editBudget}>Edit</button>
 
             </div>

@@ -22,6 +22,10 @@ class Main extends Component {
       redirect: null,
       originalBudget: 0,
       principleExpense: 0,
+      housingExpense: 0,
+      savingsExpense: 0,
+      insuranceExpense: 0,
+      subscriptionExpense: 0,
       registeredBudget: 0,
       remainingBudget: 0,
       additionalExpenses: 0,
@@ -140,6 +144,10 @@ class Main extends Component {
       this.setState({ originalBudget: response.data.budget});
       this.setState({ principleExpense: response.data.principles });
       this.setState({ registeredBudget: response.data.budget - response.data.principles})
+      this.setState({ housingExpense: response.data.housing });
+      this.setState({ savingsExpense: response.data.savings });
+      this.setState({ insuranceExpense: response.data.insurance });
+      this.setState({ subscriptionExpense: response.data.subscriptions });
       this.setState({ remainingBudget: response.data.leftover});
       if(this.state.remainingBudget === 0){
         this.state.remainingBudget += this.state.registeredBudget;
@@ -345,7 +353,9 @@ showSidebar = () => {
   <h3 className='budgetTitle'>This Month's Budget</h3>
   <div className='thisBudget'>
   <span id='budgetNum' className='font-roboto' data-tip data-for='budgetBreakdown'>${this.state.registeredBudget}</span>
+  {/* trying to create a tooltip with principle breakdown with on click event */}
   <ReactTooltip id='budgetBreakdown' effect='solid' className='tooltips'>Original Budget(${this.state.originalBudget}) - Principle Expenses(${this.state.principleExpense })</ReactTooltip>
+  <ReactTooltip id='budgetBreakdown' effect='float' place='bottom' className='tooltips'>Housing:</ReactTooltip>
   </div>
   <h3 className='budgetTitle'>Remaining Budget</h3>
 <div className={this.state.remainingBudget >= 0 ? 'remainingBudget' : 'remainingBudgetNeg'}>

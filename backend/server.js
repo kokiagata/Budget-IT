@@ -103,7 +103,7 @@ app.get('/', checkAuthenticated, (req, res) => {
       let remain = result.budget - totalPrinciple - Number(minus).toFixed(2);
 
       
-      res.send({budget: result.budget, leftover: Number(remain).toFixed(2), principles: totalPrinciple});
+      res.send({budget: result.budget, leftover: Number(remain).toFixed(2), principles: totalPrinciple, housing: result.housing, savings: result.savings, insurance: result.insurance, subscriptions: result.subscriptions});
       console.log(req.user._id);
     } else {
       console.log(err)
@@ -344,19 +344,55 @@ User.findOne({_id: req.user._id}, (err, item) => {
 
 app.post('/edited-budget', (req, res) => {
   
-  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget, housing: req.body.newHousing, savings: req.body.newSavings, insurance: req.body.newInsurance, subscriptions: req.body.newSubscription}, (err, result) => {
-    if(!err) {
-      console.log(result.budget);
-      console.log(result.housing);
-      console.log(result.savings);
-      console.log(result.insurance);
-      console.log(result.subscription);
+  if(req.body.budget){
+  User.findByIdAndUpdate(req.user._id, {budget: req.body.budget}, (err, result) => {
+    if(err){
+      console.log(err);
+      console.log('something wrong with budget update')
+    }
+  });
+}
+  if(req.body.newHousing) {
+    User.findByIdAndUpdate(req.user._id, {housing: req.body.newHousing}, (err, result) => {
+      if(err) {
+        console.log(err);
+        console.log('something wrong with housing update');
+      }
+    });
+  }
+  if(req.body.newSavings) {
+    User.findByIdAndUpdate(req.user._id, {savings: req.body.newSavings}, (err, result) => {
+      if(err) {
+        console.log(err);
+        console.log('something wrong with savings update');
+      }
+    });
+  }
+  if(req.body.newInsurance) {
+    User.findByIdAndUpdate(req.user._id, {insurance: req.body.newInsurance}, (err, result) => {
+      if(err) {
+        console.log(err);
+        console.log('something wrong with insurance update');
+      }
+    })
+  }
+  if(req.body.newSubscription) {
+    User.findByIdAndUpdate(req.user._id, {subscriptions: req.body.newSubscription}, (err, result) => {
+      if(err) {
+        console.log(err);
+        console.log('something wrong with subscriptions update');
+      }
+    })
+  }
+  User.findById(req.user._id, (err, item) => {
+    if(!err && item.budget !== null && item.housing !== null && item.savings !== null && item.insurance !== null && item.subscription !== null){
       res.send('budget edited');
     } else {
       console.log(err);
     }
   });
-});
+  });
+
 
 app.get('/get-principle-data', (req, res) => {
   User.findById(req.user._id, (err, result) => {
